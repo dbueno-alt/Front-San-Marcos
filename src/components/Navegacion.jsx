@@ -3,7 +3,7 @@ import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSesion } from "../context/ContextoSesion";
 
-function Navegacion({ cantidadCarrito }) {
+function Navegacion() {
   const { usuario, salir } = useSesion();
   const navigate = useNavigate();
 
@@ -22,28 +22,16 @@ function Navegacion({ cantidadCarrito }) {
         <Navbar.Toggle aria-controls="menu-principal" />
 
         <Navbar.Collapse id="menu-principal">
-          {/* Navegación Principal del Sitio */}
+          {/* Secciones principales acordadas para la veterinaria */}
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/" end>
-              Inicio
+            <Nav.Link as={NavLink} to="/catalogo">
+              Catálogo
             </Nav.Link>
             <Nav.Link as={NavLink} to="/nosotros">
               Nosotros
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/noticias">
-              Noticias
-            </Nav.Link>
             <Nav.Link as={NavLink} to="/multimedia">
               Multimedia
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/catalogo">
-              Catálogo
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/carrito">
-              Carrito <span className="badge bg-success">{cantidadCarrito || 0}</span>
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/contacto">
-              Contacto
             </Nav.Link>
           </Nav>
 

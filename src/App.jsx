@@ -84,7 +84,7 @@ export default function App() {
   return (
     <ProveedorSesion>
       <Cabecera />
-      <Navegacion cantidadCarrito={contarUnidades(carrito)} />
+      <Navegacion />
 
       <Routes>
         {/* Rutas Públicas */}
