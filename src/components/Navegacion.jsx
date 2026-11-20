@@ -52,6 +52,11 @@ function Navegacion() {
               </>
             ) : (
               <>
+                {usuario.rol === "USER" && (
+                  <Nav.Link as={NavLink} to="/citas">
+                    Mis citas
+                  </Nav.Link>
+                )}
                 {usuario.rol === "ADMIN" && (
                   <>
                     <Nav.Link as={NavLink} to="/admin">

@@ -20,6 +20,7 @@ import AdminProductoDetalle from "./pages/admin/AdminProductoDetalle";
 import AdminProductos from "./pages/admin/AdminProductos";
 import Carrito from "./pages/Carrito";
 import Catalogo from "./pages/Catalogo";
+import Citas from "./pages/Citas";
 import Contacto from "./pages/Contacto";
 import DetalleNoticia from "./pages/DetalleNoticia";
 import DetalleProducto from "./pages/DetalleProducto";
@@ -112,6 +113,10 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/sin-acceso" element={<SinAcceso />} />
+
+        <Route element={<RutaProtegida rolesPermitidos={["USER"]} />}>
+          <Route path="/citas" element={<Citas />} />
+        </Route>
 
         {/* Rutas Protegidas Exclusivas para Administradores */}
         <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
