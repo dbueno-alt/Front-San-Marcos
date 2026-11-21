@@ -42,3 +42,9 @@ export const actualizarCita = (id, cita) =>
 export const archivarCita = (id) => solicitar(`/${id}`, { method: "DELETE" });
 
 export const listarTodasLasCitasAdmin = () => solicitar("", {}, RUTA_ADMIN_CITAS);
+
+export const actualizarEstadoCitaAdmin = (id, estado) =>
+  solicitar(`/${id}/estado`, {
+    method: "PUT",
+    body: JSON.stringify({ estado }),
+  }, RUTA_ADMIN_CITAS);
