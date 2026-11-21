@@ -3,8 +3,9 @@ import { servicioLogin } from "./servicioLogin";
 const ACTIVIDADES_API_URL =
   import.meta.env.VITE_ACTIVIDADES_API_URL || "http://localhost:8082/api";
 const RUTA_CITAS = `${ACTIVIDADES_API_URL}/v1/citas`;
+const RUTA_ADMIN_CITAS = `${ACTIVIDADES_API_URL}/v1/admin/citas`;
 
-async function solicitar(ruta, opciones = {}) {
+async function solicitar(ruta, opciones = {}, rutaBase = RUTA_CITAS) {
   const token = servicioLogin.obtenerToken();
   const headers = { "Content-Type": "application/json", ...opciones.headers };
 
@@ -14,7 +15,7 @@ async function solicitar(ruta, opciones = {}) {
 
   let respuesta;
   try {
-    respuesta = await fetch(`${RUTA_CITAS}${ruta}`, { ...opciones, headers });
+    respuesta = await fetch(`${rutaBase}${ruta}`, { ...opciones, headers });
   } catch {
     throw new Error("No se pudo conectar con el servicio de citas.");
   }
@@ -39,3 +40,5 @@ export const actualizarCita = (id, cita) =>
   solicitar(`/${id}`, { method: "PUT", body: JSON.stringify(cita) });
 
 export const archivarCita = (id) => solicitar(`/${id}`, { method: "DELETE" });
+
+export const listarTodasLasCitasAdmin = () => solicitar("", {}, RUTA_ADMIN_CITAS);

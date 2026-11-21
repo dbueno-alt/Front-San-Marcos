@@ -67,6 +67,9 @@ function Navegacion() {
                     <Nav.Link as={NavLink} to="/admin/productos">
                       Administración Productos
                     </Nav.Link>
+                    <Nav.Link as={NavLink} to="/admin/citas">
+                      Administrar citas
+                    </Nav.Link>
                   </>
                 )}
                 <Navbar.Text className="me-2">

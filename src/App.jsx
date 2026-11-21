@@ -18,6 +18,7 @@ import { guardarCarrito, guardarProductos } from "./utils/persistencia";
 // Páginas Generales y del Catálogo
 import AdminProductoDetalle from "./pages/admin/AdminProductoDetalle";
 import AdminProductos from "./pages/admin/AdminProductos";
+import CitasAdmin from "./pages/admin/CitasAdmin";
 import Carrito from "./pages/Carrito";
 import Catalogo from "./pages/Catalogo";
 import Citas from "./pages/Citas";
@@ -121,6 +122,7 @@ export default function App() {
         {/* Rutas Protegidas Exclusivas para Administradores */}
         <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
           <Route path="/admin" element={<PanelAdministrador />} />
+          <Route path="/admin/citas" element={<CitasAdmin />} />
           <Route
             path="/admin/productos"
             element={<AdminProductos productos={productos} onGuardar={guardarProducto} onEliminar={eliminarProducto} />}
