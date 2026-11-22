@@ -116,6 +116,15 @@ function Citas() {
     <main className="container py-4">
       <h1>Mis citas</h1>
       <p>Registra las atenciones de tu mascota y consulta su historial.</p>
+      <Button
+        type="button"
+        variant="outline-primary"
+        className="mb-3"
+        onClick={cargarCitas}
+        disabled={cargando || guardando}
+      >
+        {cargando ? "Actualizando citas..." : "Actualizar citas"}
+      </Button>
 
       {error && <Alert variant="danger" role="alert">{error}</Alert>}
       {mensaje && <Alert variant="success" role="status">{mensaje}</Alert>}
@@ -247,7 +256,7 @@ function Citas() {
                   <tbody>
                     {citas.map((cita) => (
                       <tr key={cita.id}>
-                        <td>{cita.fechaHora.replace("T", " ").slice(0, 16)}</td>
+                        <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
                         <td>{cita.motivo}</td>
                         <td>{cita.estado}</td>
@@ -292,15 +301,17 @@ function Citas() {
                       <th scope="col">Mascota</th>
                       <th scope="col">Motivo</th>
                       <th scope="col">Estado</th>
+                      <th scope="col">Recordatorio</th>
                     </tr>
                   </thead>
                   <tbody>
                     {historial.map((cita) => (
                       <tr key={cita.id}>
-                        <td>{cita.fechaHora.replace("T", " ").slice(0, 16)}</td>
+                        <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
                         <td>{cita.motivo}</td>
                         <td>{cita.estado}</td>
+                        <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                       </tr>
                     ))}
                   </tbody>
