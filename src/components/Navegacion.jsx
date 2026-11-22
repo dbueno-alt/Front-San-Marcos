@@ -64,9 +64,6 @@ function Navegacion() {
                         Panel Admin
                       </Button>
                     </Nav.Link>
-                    <Nav.Link as={NavLink} to="/admin/productos">
-                      Administración Productos
-                    </Nav.Link>
                     <Nav.Link as={NavLink} to="/admin/citas">
                       Administrar citas
                     </Nav.Link>

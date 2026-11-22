@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 // Contexto y Seguridad
@@ -12,11 +11,8 @@ import PiePagina from "./components/PiePagina";
 
 // Datos y utilidades del catálogo
 import { productosIniciales } from "./data/catalogo";
-import { guardarProductos } from "./utils/persistencia";
 
 // Páginas Generales y del Catálogo
-import AdminProductoDetalle from "./pages/admin/AdminProductoDetalle";
-import AdminProductos from "./pages/admin/AdminProductos";
 import CitasAdmin from "./pages/admin/CitasAdmin";
 import Catalogo from "./pages/Catalogo";
 import Citas from "./pages/Citas";
@@ -40,27 +36,6 @@ const SinAcceso = () => (
 );
 
 export default function App() {
-  const [productos, setProductos] = useState(() => {
-    const guardados = localStorage.getItem("productos");
-    return guardados ? JSON.parse(guardados) : productosIniciales;
-  });
-
-  useEffect(() => {
-    guardarProductos(productos);
-  }, [productos]);
-
-  function guardarProducto(producto) {
-    const existe = productos.some((item) => item.codigo === producto.codigo);
-    if (existe) return;
-
-    setProductos([...productos, producto]);
-  }
-
-  function eliminarProducto(codigo) {
-    setProductos(productos.filter((producto) => producto.codigo !== codigo));
-    setCarrito(quitarDelCarrito(carrito, codigo));
-  }
-
   return (
     <ProveedorSesion>
       <Cabecera />
@@ -71,8 +46,8 @@ export default function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/multimedia" element={<Multimedia />} />
-        <Route path="/catalogo" element={<Catalogo productos={productos} />} />
-        <Route path="/productos/:codigo" element={<DetalleProducto productos={productos} />} />
+        <Route path="/catalogo" element={<Catalogo productos={productosIniciales} />} />
+        <Route path="/productos/:codigo" element={<DetalleProducto productos={productosIniciales} />} />
 
         {/* Rutas de Autenticación */}
         <Route path="/login" element={<Login />} />
@@ -87,11 +62,6 @@ export default function App() {
         <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
           <Route path="/admin" element={<Navigate to="/admin/citas" replace />} />
           <Route path="/admin/citas" element={<CitasAdmin />} />
-          <Route
-            path="/admin/productos"
-            element={<AdminProductos productos={productos} onGuardar={guardarProducto} onEliminar={eliminarProducto} />}
-          />
-          <Route path="/admin/productos/:codigo" element={<AdminProductoDetalle productos={productos} />} />
         </Route>
 
         <Route path="*" element={<NoEncontrada />} />
