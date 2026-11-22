@@ -21,6 +21,11 @@ export default function CitasAdmin() {
     if (filtro === "SOLICITADAS") return cita.estado === "SOLICITADA" && !cita.archivada;
     return true;
   });
+  const cantidadActivas = citas.filter((cita) => !cita.archivada).length;
+  const cantidadArchivadas = citas.filter((cita) => cita.archivada).length;
+  const cantidadSolicitadas = citas.filter((cita) =>
+    cita.estado === "SOLICITADA" && !cita.archivada
+  ).length;
 
   const cargarCitas = useCallback(async () => {
     setError("");
@@ -70,6 +75,11 @@ export default function CitasAdmin() {
         <p>No hay citas registradas.</p>
       ) : (
         <>
+          <p aria-live="polite">
+            Activas: <strong>{cantidadActivas}</strong> · Archivadas:{" "}
+            <strong>{cantidadArchivadas}</strong> · Pendientes de revisión:{" "}
+            <strong>{cantidadSolicitadas}</strong>
+          </p>
           <Form.Group className="mb-3" controlId="filtro-citas">
             <Form.Label>Filtrar citas</Form.Label>
             <Form.Select value={filtro} onChange={(evento) => setFiltro(evento.target.value)}>
