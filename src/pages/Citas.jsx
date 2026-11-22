@@ -25,6 +25,9 @@ function Citas() {
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const recordatoriosProximos = citas.filter((cita) =>
+    cita.recordatorioSolicitado && new Date(cita.fechaHora) >= new Date()
+  );
 
   const cargarCitas = useCallback(async () => {
     setCargando(true);
@@ -110,6 +113,22 @@ function Citas() {
 
       {error && <Alert variant="danger" role="alert">{error}</Alert>}
       {mensaje && <Alert variant="success" role="status">{mensaje}</Alert>}
+
+      <section className="mb-4" aria-labelledby="titulo-recordatorios">
+        <h2 id="titulo-recordatorios" className="h4">Próximos recordatorios</h2>
+        {recordatoriosProximos.length === 0 ? (
+          <p>No tienes citas próximas con recordatorio solicitado.</p>
+        ) : (
+          <ul className="list-group">
+            {recordatoriosProximos.map((cita) => (
+              <li className="list-group-item" key={cita.id}>
+                <strong>{cita.nombreMascota}</strong>: cita el{" "}
+                {new Date(cita.fechaHora).toLocaleString("es-CL")}.
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section className="mb-5" aria-labelledby="titulo-formulario-cita">
         <h2 id="titulo-formulario-cita">
