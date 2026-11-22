@@ -99,11 +99,17 @@ export default function CitasAdmin() {
               <tbody>
                 {citasFiltradas.map((cita) => (
                   <tr key={cita.id}>
-                    <td>{cita.fechaHora.replace("T", " ").slice(0, 16)}</td>
+                    <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                     <td>{cita.correoUsuario}</td>
                     <td>{cita.nombreMascota} ({cita.especie})</td>
                     <td>{cita.motivo}</td>
-                    <td>{cita.estado}</td>
+                    <td>
+                      {cita.estado === "SOLICITADA" ? (
+                        <Badge bg="warning" text="dark">Solicitada</Badge>
+                      ) : (
+                        cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()
+                      )}
+                    </td>
                     <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                     <td>
                       <Badge bg={cita.archivada ? "secondary" : "success"}>

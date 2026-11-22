@@ -259,7 +259,7 @@ function Citas() {
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
                         <td>{cita.motivo}</td>
-                        <td>{cita.estado}</td>
+                        <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                         <td>
                           <Button
@@ -310,7 +310,7 @@ function Citas() {
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
                         <td>{cita.motivo}</td>
-                        <td>{cita.estado}</td>
+                        <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                       </tr>
                     ))}
