@@ -59,11 +59,6 @@ function Navegacion() {
                 )}
                 {usuario.rol === "ADMIN" && (
                   <>
-                    <Nav.Link as={NavLink} to="/admin">
-                      <Button variant="warning" size="sm" className="fw-bold">
-                        Panel Admin
-                      </Button>
-                    </Nav.Link>
                     <Nav.Link as={NavLink} to="/admin/citas">
                       Administrar citas
                     </Nav.Link>
