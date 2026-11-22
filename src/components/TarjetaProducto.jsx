@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatearPrecio } from "../utils/precio";
 
-function TarjetaProducto({ producto, onAgregar }) {
+function TarjetaProducto({ producto }) {
   return (
     <article className="card h-100">
       <img
@@ -23,13 +23,6 @@ function TarjetaProducto({ producto, onAgregar }) {
         <Link className="btn btn-outline-success me-2" to={`/productos/${producto.codigo}`}>
           Ver detalle
         </Link>
-        <button
-          className="btn btn-success"
-          onClick={() => onAgregar(producto)}
-          disabled={producto.stock === 0}
-        >
-          Añadir
-        </button>
       </div>
     </article>
   );

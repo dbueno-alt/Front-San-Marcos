@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { formatearPrecio } from "../utils/precio";
 
-function DetalleProducto({ productos, onAgregar }) {
+function DetalleProducto({ productos }) {
   const { codigo } = useParams();
   const producto = productos.find((item) => item.codigo === codigo);
 
@@ -28,13 +28,6 @@ function DetalleProducto({ productos, onAgregar }) {
           <p>Presentación: {producto.presentacion}</p>
           <p>Stock: {producto.stock}</p>
           <p className="fs-4 fw-bold">{formatearPrecio(producto.precio)}</p>
-          <button
-            className="btn btn-success me-2"
-            onClick={() => onAgregar(producto)}
-            disabled={producto.stock === 0}
-          >
-            Añadir al carrito
-          </button>
           <Link to="/catalogo">Volver al catálogo</Link>
         </div>
       </div>

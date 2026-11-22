@@ -10,26 +10,21 @@ import Cabecera from "./components/Cabecera";
 import Navegacion from "./components/Navegacion";
 import PiePagina from "./components/PiePagina";
 
-// Datos y Utilidades del Catálogo / Carrito
+// Datos y utilidades del catálogo
 import { productosIniciales } from "./data/catalogo";
-import { agregarAlCarrito, contarUnidades, quitarDelCarrito } from "./utils/carrito";
-import { guardarCarrito, guardarProductos } from "./utils/persistencia";
+import { guardarProductos } from "./utils/persistencia";
 
 // Páginas Generales y del Catálogo
 import AdminProductoDetalle from "./pages/admin/AdminProductoDetalle";
 import AdminProductos from "./pages/admin/AdminProductos";
 import CitasAdmin from "./pages/admin/CitasAdmin";
-import Carrito from "./pages/Carrito";
 import Catalogo from "./pages/Catalogo";
 import Citas from "./pages/Citas";
-import Contacto from "./pages/Contacto";
-import DetalleNoticia from "./pages/DetalleNoticia";
 import DetalleProducto from "./pages/DetalleProducto";
 import Inicio from "./pages/Inicio";
 import Multimedia from "./pages/Multimedia";
 import NoEncontrada from "./pages/NoEncontrada";
 import Nosotros from "./pages/Nosotros";
-import Noticias from "./pages/Noticias";
 
 // Páginas del Módulo de Autenticación
 import { Login } from "./pages/Login";
@@ -50,25 +45,9 @@ export default function App() {
     return guardados ? JSON.parse(guardados) : productosIniciales;
   });
 
-  const [carrito, setCarrito] = useState(() => {
-    const guardado = localStorage.getItem("carrito");
-    return guardado ? JSON.parse(guardado) : [];
-  });
-
   useEffect(() => {
     guardarProductos(productos);
   }, [productos]);
-
-  useEffect(() => {
-    guardarCarrito(carrito);
-  }, [carrito]);
-
-  function agregar(producto) {
-    const item = carrito.find((registro) => registro.codigo === producto.codigo);
-    if (item && item.cantidad >= producto.stock) return;
-
-    setCarrito(agregarAlCarrito(carrito, producto));
-  }
 
   function guardarProducto(producto) {
     const existe = productos.some((item) => item.codigo === producto.codigo);
@@ -91,23 +70,9 @@ export default function App() {
         {/* Rutas Públicas */}
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
-        <Route path="/noticias" element={<Noticias />} />
-        <Route path="/noticias/:id" element={<DetalleNoticia />} />
         <Route path="/multimedia" element={<Multimedia />} />
-        <Route path="/contacto" element={<Contacto />} />
-        <Route path="/catalogo" element={<Catalogo productos={productos} onAgregar={agregar} />} />
-        <Route path="/productos/:codigo" element={<DetalleProducto productos={productos} onAgregar={agregar} />} />
-        <Route
-          path="/carrito"
-          element={
-            <Carrito
-              carrito={carrito}
-              productos={productos}
-              onQuitar={(codigo) => setCarrito(quitarDelCarrito(carrito, codigo))}
-              onVaciar={() => setCarrito([])}
-            />
-          }
-        />
+        <Route path="/catalogo" element={<Catalogo productos={productos} />} />
+        <Route path="/productos/:codigo" element={<DetalleProducto productos={productos} />} />
 
         {/* Rutas de Autenticación */}
         <Route path="/login" element={<Login />} />

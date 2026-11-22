@@ -4,7 +4,7 @@ import TarjetaProducto from "../components/TarjetaProducto";
 import { servicios } from "../data/catalogo";
 import { formatearPrecio } from "../utils/precio";
 
-function Catalogo({ productos, onAgregar }) {
+function Catalogo({ productos }) {
   const [categoria, setCategoria] = useState("Todas");
   const [texto, setTexto] = useState("");
   const [categoriaServicio, setCategoriaServicio] = useState("Todas");
@@ -63,7 +63,7 @@ function Catalogo({ productos, onAgregar }) {
       <Row className="g-4">
         {visibles.map((producto) => (
           <Col xs={12} md={6} lg={4} key={producto.codigo}>
-            <TarjetaProducto producto={producto} onAgregar={onAgregar} />
+            <TarjetaProducto producto={producto} />
           </Col>
         ))}
       </Row>
