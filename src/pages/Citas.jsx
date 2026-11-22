@@ -16,6 +16,12 @@ const datosIniciales = {
   recordatorioSolicitado: false,
 };
 
+function obtenerFechaHoraMinima() {
+  const ahora = new Date();
+  ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
+  return ahora.toISOString().slice(0, 16);
+}
+
 function Citas() {
   const [citas, setCitas] = useState([]);
   const [historial, setHistorial] = useState([]);
@@ -169,6 +175,7 @@ function Citas() {
               type="datetime-local"
               name="fechaHora"
               value={datos.fechaHora}
+              min={obtenerFechaHoraMinima()}
               onChange={cambiarCampo}
               required
             />
