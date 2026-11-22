@@ -25,7 +25,7 @@ export const Login = () => {
       if (usuario.rol === "ADMIN") {
         navigate("/admin");
       } else {
-        navigate("/");
+        navigate("/citas");
       }
     } catch (err) {
       setError(err.message);

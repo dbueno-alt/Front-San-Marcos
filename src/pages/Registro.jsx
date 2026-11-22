@@ -45,7 +45,7 @@ export const Registro = () => {
 
     try {
       await registrar(nombre, correo, clave, region, comuna);
-      navigate("/");
+      navigate("/citas");
     } catch (err) {
       setError(err.message);
     }

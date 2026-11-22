@@ -8,6 +8,10 @@ export const REGIONES_Y_COMUNAS = [
     comunas: ["Santiago", "Providencia", "Las Condes", "Ñuñoa", "Maipú", "San Bernardo", "Puente Alto"]
   },
   {
+    region: "Región del Libertador General Bernardo O'Higgins",
+    comunas: ["Rancagua"]
+  },
+  {
     region: "Valparaíso",
     comunas: ["Valparaíso", "Viña del Mar", "Quilpué", "Villa Alemana", "Concón"]
   },
