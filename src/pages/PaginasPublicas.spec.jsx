@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import Bienvenida from '../components/Bienvenida'
 import NoticiasDestacadas from '../components/NoticiasDestacadas'
 import Inicio from './Inicio'
-import Multimedia from './Multimedia'
 import NoEncontrada from './NoEncontrada'
 import Noticias from './Noticias'
 import Nosotros from './Nosotros'
@@ -66,16 +65,6 @@ describe('páginas públicas', () => {
 
     expect(screen.getByRole('heading', { name: 'Noticias', level: 1 })).toBeInTheDocument()
     expect(screen.getAllByRole('article')).toHaveLength(3)
-  })
-
-  it('incluye el video con título accesible en la página multimedia', () => {
-    renderConRouter(<Multimedia />)
-
-    expect(screen.getByRole('heading', { name: 'Música para perros' })).toBeInTheDocument()
-    expect(screen.getByTitle('Música para perros con ansiedad')).toHaveAttribute(
-      'src',
-      'https://www.youtube-nocookie.com/embed/DIt8a1Sb68U',
-    )
   })
 
   it('explica cuando una dirección pública no existe', () => {

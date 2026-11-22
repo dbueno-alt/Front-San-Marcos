@@ -30,9 +30,6 @@ function Navegacion() {
             <Nav.Link as={NavLink} to="/nosotros">
               Nosotros
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/multimedia">
-              Multimedia
-            </Nav.Link>
           </Nav>
 
           {/* Opciones de Autenticación y Roles */}
@@ -52,6 +49,9 @@ function Navegacion() {
               </>
             ) : (
               <>
+                <Nav.Link as={NavLink} to="/ubicacion">
+                  Cómo llegar
+                </Nav.Link>
                 {usuario.rol === "USER" && (
                   <Nav.Link as={NavLink} to="/citas">
                     Mis citas

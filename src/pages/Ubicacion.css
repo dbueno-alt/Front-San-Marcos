@@ -1,0 +1,21 @@
+/* Estilos solo de la página del mapa */
+.pagina-ubicacion {
+  text-align: left;
+}
+
+.mapa-clinica {
+  height: 320px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .mapa-clinica {
+    height: 420px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mapa-clinica {
+    height: 520px;
+  }
+}

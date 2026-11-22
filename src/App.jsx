@@ -14,9 +14,9 @@ import CitasAdmin from "./pages/admin/CitasAdmin";
 import Catalogo from "./pages/Catalogo";
 import Citas from "./pages/Citas";
 import Inicio from "./pages/Inicio";
-import Multimedia from "./pages/Multimedia";
 import NoEncontrada from "./pages/NoEncontrada";
 import Nosotros from "./pages/Nosotros";
+import Ubicacion from "./pages/Ubicacion"; // mapa de la clínica (Leaflet)
 
 // Páginas del Módulo de Autenticación
 import { Login } from "./pages/Login";
@@ -41,7 +41,6 @@ export default function App() {
         {/* Rutas Públicas */}
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
-        <Route path="/multimedia" element={<Multimedia />} />
         <Route path="/catalogo" element={<Catalogo />} />
 
         {/* Rutas de Autenticación */}
@@ -57,6 +56,11 @@ export default function App() {
         <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
           <Route path="/admin" element={<Navigate to="/admin/citas" replace />} />
           <Route path="/admin/citas" element={<CitasAdmin />} />
+        </Route>
+
+        {/* Mapa de la clínica: cualquier usuario con sesión iniciada */}
+        <Route element={<RutaProtegida />}>
+          <Route path="/ubicacion" element={<Ubicacion />} />
         </Route>
 
         <Route path="*" element={<NoEncontrada />} />

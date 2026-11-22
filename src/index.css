@@ -75,8 +75,10 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+  font-weight: 700;
+  /* color fijo oscuro: el fondo de la página siempre es blanco (Bootstrap),
+     así los títulos no se vuelven casi blancos cuando Windows está en modo oscuro */
+  color: #212529;
 }
 
 h1 {
@@ -116,4 +118,11 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Evita que los links del menú se partan en dos líneas */
+.navbar .nav-link,
+.navbar .navbar-text,
+.navbar .btn {
+  white-space: nowrap;
 }
