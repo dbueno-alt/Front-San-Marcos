@@ -9,14 +9,10 @@ import Cabecera from "./components/Cabecera";
 import Navegacion from "./components/Navegacion";
 import PiePagina from "./components/PiePagina";
 
-// Datos y utilidades del catálogo
-import { productosIniciales } from "./data/catalogo";
-
-// Páginas Generales y del Catálogo
+// Páginas principales y gestión de citas
 import CitasAdmin from "./pages/admin/CitasAdmin";
 import Catalogo from "./pages/Catalogo";
 import Citas from "./pages/Citas";
-import DetalleProducto from "./pages/DetalleProducto";
 import Inicio from "./pages/Inicio";
 import Multimedia from "./pages/Multimedia";
 import NoEncontrada from "./pages/NoEncontrada";
@@ -46,8 +42,7 @@ export default function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/multimedia" element={<Multimedia />} />
-        <Route path="/catalogo" element={<Catalogo productos={productosIniciales} />} />
-        <Route path="/productos/:codigo" element={<DetalleProducto productos={productosIniciales} />} />
+        <Route path="/catalogo" element={<Catalogo />} />
 
         {/* Rutas de Autenticación */}
         <Route path="/login" element={<Login />} />

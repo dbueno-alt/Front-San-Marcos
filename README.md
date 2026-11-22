@@ -1,17 +1,34 @@
-# React + Vite
+# Veterinaria San Marcos — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interfaz React para consultar los servicios de la veterinaria, crear una cuenta e iniciar sesión, y gestionar citas e historial.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js y npm.
+- Los servicios Auth y Back disponibles para las funciones de inicio de sesión y citas.
 
-## React Compiler
+## Configuración local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Las URL de desarrollo están en `.env.development` y pueden ajustarse para el entorno local:
 
-## Expanding the Oxlint configuration
+- `VITE_AUTH_API_URL`: URL base de Auth.
+- `VITE_ACTIVIDADES_API_URL`: URL base del API de citas.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-"# Front-San-Marcos" 
+Los valores que empiezan con `VITE_` son visibles en el navegador. No guardar secretos en estos valores.
+
+## Ejecución
+
+Desde esta carpeta:
+
+```text
+npm install
+npm run dev
+```
+
+Para generar la versión de producción:
+
+```text
+npm run build
+```
+
+La configuración `.env.production` dirige las solicitudes a los prefijos que Nginx reenvía a Auth y Back.

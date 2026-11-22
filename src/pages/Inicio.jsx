@@ -36,7 +36,7 @@ function Inicio() {
           </p>
           <div className="d-flex flex-wrap gap-2 mt-4">
             <Link className="btn btn-success btn-lg" to="/catalogo">
-              Revisar catálogo
+              Ver servicios veterinarios
             </Link>
             <Link className="btn btn-outline-success btn-lg" to="/nosotros">
               Conocer la clínica
