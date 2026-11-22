@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 // Contexto y Seguridad
 import { ProveedorSesion } from "./context/ContextoSesion";
@@ -34,7 +34,6 @@ import Noticias from "./pages/Noticias";
 // Páginas del Módulo de Autenticación
 import { Login } from "./pages/Login";
 import { Registro } from "./pages/Registro";
-import { PanelAdministrador } from "./pages/PanelAdministrador";
 
 const SinAcceso = () => (
   <div className="container py-4">
@@ -121,7 +120,7 @@ export default function App() {
 
         {/* Rutas Protegidas Exclusivas para Administradores */}
         <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
-          <Route path="/admin" element={<PanelAdministrador />} />
+          <Route path="/admin" element={<Navigate to="/admin/citas" replace />} />
           <Route path="/admin/citas" element={<CitasAdmin />} />
           <Route
             path="/admin/productos"
