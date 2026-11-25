@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Form, Button, Card, Alert, Container, Row, Col } from "react-bootstrap";
 import { useSesion } from "../context/ContextoSesion";
 import { validarCamposVacios } from "../services/servicioLogin";
@@ -8,6 +8,8 @@ export const Login = () => {
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [error, setError] = useState("");
+  const [cargando, setCargando] = useState(false);
+
   const { ingresar } = useSesion();
   const navigate = useNavigate();
 
@@ -20,17 +22,23 @@ export const Login = () => {
       return;
     }
 
+    setCargando(true);
     try {
       const usuario = await ingresar(correo, clave);
-      if (usuario.rol === "ADMIN" || usuario.rol === "VETERINARIO") {
-        navigate("/admin/citas");
+
+      if (usuario.rol === "ADMIN") {
+        navigate("/admin/usuarios");
       } else if (usuario.rol === "RECEPCIONISTA") {
-        navigate("/catalogo");
+        navigate("/admin/citas");
+      } else if (usuario.rol === "VETERINARIO") {
+        navigate("/veterinario/atenciones");
       } else {
         navigate("/citas");
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -52,6 +60,7 @@ export const Login = () => {
                     placeholder="ejemplo@correo.com"
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
+                    disabled={cargando}
                   />
                 </Form.Group>
 
@@ -62,13 +71,25 @@ export const Login = () => {
                     placeholder="••••••••"
                     value={clave}
                     onChange={(e) => setClave(e.target.value)}
+                    disabled={cargando}
                   />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100 py-2">
-                  Entrar
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100 py-2"
+                  disabled={cargando}
+                >
+                  {cargando ? "Ingresando..." : "Entrar"}
                 </Button>
               </Form>
+
+              <div className="text-center mt-3">
+                <small className="text-muted">
+                  ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
+                </small>
+              </div>
             </Card.Body>
           </Card>
         </Col>

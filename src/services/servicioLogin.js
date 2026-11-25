@@ -1,7 +1,6 @@
 const CLAVE_SESION_ACTUAL = "usuario_actual";
 const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || "http://localhost:8081/api";
 
-// Base de datos local de Regiones y Comunas de Chile
 export const REGIONES_Y_COMUNAS = [
   {
     region: "Región Metropolitana de Santiago",
@@ -21,7 +20,6 @@ export const REGIONES_Y_COMUNAS = [
   }
 ];
 
-// Funciones puras de utilidad
 export const validarCamposVacios = (...campos) => {
   return campos.every((campo) => campo && String(campo).trim() !== "");
 };
@@ -35,10 +33,17 @@ export const esAdministrador = (usuario) => {
   return Boolean(usuario && usuario.rol === "ADMIN");
 };
 
-// Función para obtener comunas asociadas a una región seleccionada
 export const obtenerComunasPorRegion = (nombreRegion) => {
   const regionEncontrada = REGIONES_Y_COMUNAS.find((r) => r.region === nombreRegion);
   return regionEncontrada ? regionEncontrada.comunas : [];
+};
+
+const cabecerasConToken = () => {
+  const token = servicioLogin.obtenerToken();
+  return {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  };
 };
 
 export const servicioLogin = {
@@ -47,9 +52,7 @@ export const servicioLogin = {
     try {
       respuesta = await fetch(`${AUTH_API_URL}/auth/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           correo: correo.trim(),
           password: clave
@@ -60,7 +63,6 @@ export const servicioLogin = {
     }
 
     const data = await respuesta.json().catch(() => ({}));
-
     if (!respuesta.ok) {
       throw new Error(data.mensaje || "Credenciales inválidas. Verifica tu correo y contraseña.");
     }
@@ -74,9 +76,7 @@ export const servicioLogin = {
     try {
       respuesta = await fetch(`${AUTH_API_URL}/auth/registro`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nombre: nombre.trim(),
           correo: correo.trim(),
@@ -90,12 +90,62 @@ export const servicioLogin = {
     }
 
     const data = await respuesta.json().catch(() => ({}));
-
     if (!respuesta.ok) {
       throw new Error(data.mensaje || "No se pudo completar el registro.");
     }
 
     sessionStorage.setItem(CLAVE_SESION_ACTUAL, JSON.stringify(data));
+    return data;
+  },
+
+  async listarUsuariosAdmin() {
+    const respuesta = await fetch(`${AUTH_API_URL}/admin/usuarios`, {
+      method: "GET",
+      headers: cabecerasConToken()
+    });
+    const data = await respuesta.json().catch(() => ([]));
+    if (!respuesta.ok) {
+      throw new Error(data.mensaje || "No se pudo obtener la lista de usuarios.");
+    }
+    return data;
+  },
+
+  async crearUsuarioAdmin(datosUsuario) {
+    const respuesta = await fetch(`${AUTH_API_URL}/admin/usuarios`, {
+      method: "POST",
+      headers: cabecerasConToken(),
+      body: JSON.stringify(datosUsuario)
+    });
+    const data = await respuesta.json().catch(() => ({}));
+    if (!respuesta.ok) {
+      throw new Error(data.mensaje || "No se pudo crear el usuario.");
+    }
+    return data;
+  },
+
+  async editarUsuarioAdmin(id, datosUsuario) {
+    const respuesta = await fetch(`${AUTH_API_URL}/admin/usuarios/${id}`, {
+      method: "PUT",
+      headers: cabecerasConToken(),
+      body: JSON.stringify(datosUsuario)
+    });
+    const data = await respuesta.json().catch(() => ({}));
+    if (!respuesta.ok) {
+      throw new Error(data.mensaje || "No se pudo actualizar el usuario.");
+    }
+    return data;
+  },
+
+  async cambiarEstadoUsuarioAdmin(id, activo) {
+    const respuesta = await fetch(`${AUTH_API_URL}/admin/usuarios/${id}/estado`, {
+      method: "PATCH",
+      headers: cabecerasConToken(),
+      body: JSON.stringify({ activo })
+    });
+    const data = await respuesta.json().catch(() => ({}));
+    if (!respuesta.ok) {
+      throw new Error(data.mensaje || "No se pudo cambiar el estado del usuario.");
+    }
     return data;
   },
 

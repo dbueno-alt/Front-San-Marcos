@@ -4,6 +4,7 @@ const ACTIVIDADES_API_URL =
   import.meta.env.VITE_ACTIVIDADES_API_URL || "http://localhost:8082/api";
 const RUTA_CITAS = `${ACTIVIDADES_API_URL}/v1/citas`;
 const RUTA_ADMIN_CITAS = `${ACTIVIDADES_API_URL}/v1/admin/citas`;
+const RUTA_VETERINARIO_CITAS = `${ACTIVIDADES_API_URL}/v1/veterinario/citas`;
 
 async function solicitar(ruta, opciones = {}, rutaBase = RUTA_CITAS) {
   const token = servicioLogin.obtenerToken();
@@ -49,9 +50,17 @@ export const actualizarEstadoCitaAdmin = (id, estado) =>
     body: JSON.stringify({ estado }),
   }, RUTA_ADMIN_CITAS);
 
-// Administrador o veterinario: corrige los datos de la cita y agrega observaciones.
 export const actualizarCitaAdmin = (id, datos) =>
   solicitar(`/${id}`, {
     method: "PUT",
     body: JSON.stringify(datos),
   }, RUTA_ADMIN_CITAS);
+
+export const listarCitasVeterinario = () =>
+  solicitar("", {}, RUTA_VETERINARIO_CITAS);
+
+export const registrarAtencionVeterinario = (id, datosAtencion) =>
+  solicitar(`/${id}/atencion`, {
+    method: "PUT",
+    body: JSON.stringify(datosAtencion),
+  }, RUTA_VETERINARIO_CITAS);

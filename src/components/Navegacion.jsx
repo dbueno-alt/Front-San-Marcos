@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSesion } from "../context/ContextoSesion";
-import { puedeGestionarCitas, puedeVerCatalogo } from "../config/roles";
+import { puedeVerCatalogo } from "../config/roles";
 
 function Navegacion() {
   const { usuario, salir } = useSesion();
@@ -60,9 +60,19 @@ function Navegacion() {
                     Mis citas
                   </Nav.Link>
                 )}
-                {puedeGestionarCitas(usuario) && (
+                {usuario.rol === "VETERINARIO" && (
+                  <Nav.Link as={NavLink} to="/veterinario/atenciones">
+                    Box Médico / Recetas
+                  </Nav.Link>
+                )}
+                {(usuario.rol === "ADMIN" || usuario.rol === "RECEPCIONISTA") && (
                   <Nav.Link as={NavLink} to="/admin/citas">
-                    Citas de clientes
+                    Administrar citas
+                  </Nav.Link>
+                )}
+                {usuario.rol === "ADMIN" && (
+                  <Nav.Link as={NavLink} to="/admin/usuarios">
+                    Usuarios y Roles
                   </Nav.Link>
                 )}
                 <Navbar.Text className="me-2">

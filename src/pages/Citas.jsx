@@ -31,8 +31,9 @@ function Citas() {
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const recordatoriosProximos = citas.filter((cita) =>
-    cita.recordatorioSolicitado && new Date(cita.fechaHora) >= new Date()
+
+  const recordatoriosProximos = citas.filter(
+    (cita) => cita.recordatorioSolicitado && new Date(cita.fechaHora) >= new Date()
   );
 
   const cargarCitas = useCallback(async () => {
@@ -82,7 +83,6 @@ function Citas() {
     setError("");
     setMensaje("");
     setGuardando(true);
-
     try {
       if (citaEditando) {
         await actualizarCita(citaEditando, datos);
@@ -112,10 +112,37 @@ function Citas() {
     }
   }
 
+  const renderDetallesClinicos = (cita) => (
+    <>
+      {cita.motivo}
+      {cita.observaciones && (
+        <div className="small text-muted mt-1">
+          <strong>Observaciones:</strong> {cita.observaciones}
+        </div>
+      )}
+      {cita.diagnostico && (
+        <div className="small text-muted mt-1">
+          <strong>Diagnóstico:</strong> {cita.diagnostico}
+        </div>
+      )}
+      {cita.indicaciones && (
+        <div className="small text-muted mt-1">
+          <strong>Indicaciones del veterinario:</strong> {cita.indicaciones}
+        </div>
+      )}
+      {cita.receta && (
+        <div className="small text-success mt-1">
+          <strong>Receta médica:</strong> {cita.receta}
+        </div>
+      )}
+    </>
+  );
+
   return (
     <main className="container py-4">
       <h1>Mis citas</h1>
       <p>Registra las atenciones de tu mascota y consulta su historial.</p>
+
       <Button
         type="button"
         variant="outline-primary"
@@ -216,6 +243,7 @@ function Citas() {
           <p className="small text-body-secondary">
             La solicitud de recordatorio quedará asociada al registro de la cita.
           </p>
+
           <Button type="submit" variant="success" disabled={guardando}>
             {guardando ? "Guardando..." : citaEditando ? "Guardar cambios" : "Registrar cita"}
           </Button>
@@ -247,7 +275,7 @@ function Citas() {
                     <tr>
                       <th scope="col">Fecha y hora</th>
                       <th scope="col">Mascota</th>
-                      <th scope="col">Motivo</th>
+                      <th scope="col">Motivo y detalles</th>
                       <th scope="col">Estado</th>
                       <th scope="col">Recordatorio</th>
                       <th scope="col">Acciones</th>
@@ -258,14 +286,7 @@ function Citas() {
                       <tr key={cita.id}>
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
-                        <td>
-                          {cita.motivo}
-                          {cita.observaciones && (
-                            <div className="small text-muted mt-1">
-                              <strong>Indicaciones del veterinario:</strong> {cita.observaciones}
-                            </div>
-                          )}
-                        </td>
+                        <td>{renderDetallesClinicos(cita)}</td>
                         <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                         <td>
@@ -306,7 +327,7 @@ function Citas() {
                     <tr>
                       <th scope="col">Fecha y hora</th>
                       <th scope="col">Mascota</th>
-                      <th scope="col">Motivo</th>
+                      <th scope="col">Motivo y ficha médica</th>
                       <th scope="col">Estado</th>
                       <th scope="col">Recordatorio</th>
                     </tr>
@@ -316,14 +337,7 @@ function Citas() {
                       <tr key={cita.id}>
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
-                        <td>
-                          {cita.motivo}
-                          {cita.observaciones && (
-                            <div className="small text-muted mt-1">
-                              <strong>Indicaciones del veterinario:</strong> {cita.observaciones}
-                            </div>
-                          )}
-                        </td>
+                        <td>{renderDetallesClinicos(cita)}</td>
                         <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                       </tr>
