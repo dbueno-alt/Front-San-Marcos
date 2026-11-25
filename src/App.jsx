@@ -17,6 +17,7 @@ import Inicio from "./pages/Inicio";
 import NoEncontrada from "./pages/NoEncontrada";
 import Nosotros from "./pages/Nosotros";
 import Ubicacion from "./pages/Ubicacion"; // mapa de la clínica (Leaflet)
+import { ROLES_CATALOGO, ROLES_GESTION_CITAS } from "./config/roles";
 
 // Páginas del Módulo de Autenticación
 import { Login } from "./pages/Login";
@@ -41,7 +42,10 @@ export default function App() {
         {/* Rutas Públicas */}
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
-        <Route path="/catalogo" element={<Catalogo />} />
+        {/* Catálogo: solo personal de la clínica (admin, veterinario, recepcionista) */}
+        <Route element={<RutaProtegida rolesPermitidos={ROLES_CATALOGO} />}>
+          <Route path="/catalogo" element={<Catalogo />} />
+        </Route>
 
         {/* Rutas de Autenticación */}
         <Route path="/login" element={<Login />} />
@@ -52,8 +56,8 @@ export default function App() {
           <Route path="/citas" element={<Citas />} />
         </Route>
 
-        {/* Rutas Protegidas Exclusivas para Administradores */}
-        <Route element={<RutaProtegida rolesPermitidos={["ADMIN"]} />}>
+        {/* Citas de todos los clientes: administradores y veterinarios */}
+        <Route element={<RutaProtegida rolesPermitidos={ROLES_GESTION_CITAS} />}>
           <Route path="/admin" element={<Navigate to="/admin/citas" replace />} />
           <Route path="/admin/citas" element={<CitasAdmin />} />
         </Route>

@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSesion } from "../context/ContextoSesion";
+import { puedeGestionarCitas, puedeVerCatalogo } from "../config/roles";
 
 function Navegacion() {
   const { usuario, salir } = useSesion();
@@ -24,9 +25,11 @@ function Navegacion() {
         <Navbar.Collapse id="menu-principal">
           {/* Secciones principales acordadas para la veterinaria */}
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/catalogo">
-              Catálogo
-            </Nav.Link>
+            {puedeVerCatalogo(usuario) && (
+              <Nav.Link as={NavLink} to="/catalogo">
+                Catálogo
+              </Nav.Link>
+            )}
             <Nav.Link as={NavLink} to="/nosotros">
               Nosotros
             </Nav.Link>
@@ -57,12 +60,10 @@ function Navegacion() {
                     Mis citas
                   </Nav.Link>
                 )}
-                {usuario.rol === "ADMIN" && (
-                  <>
-                    <Nav.Link as={NavLink} to="/admin/citas">
-                      Administrar citas
-                    </Nav.Link>
-                  </>
+                {puedeGestionarCitas(usuario) && (
+                  <Nav.Link as={NavLink} to="/admin/citas">
+                    Citas de clientes
+                  </Nav.Link>
                 )}
                 <Navbar.Text className="me-2">
                   Hola, <strong>{usuario.nombre}</strong> ({usuario.rol})

@@ -258,7 +258,14 @@ function Citas() {
                       <tr key={cita.id}>
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
-                        <td>{cita.motivo}</td>
+                        <td>
+                          {cita.motivo}
+                          {cita.observaciones && (
+                            <div className="small text-muted mt-1">
+                              <strong>Indicaciones del veterinario:</strong> {cita.observaciones}
+                            </div>
+                          )}
+                        </td>
                         <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                         <td>
@@ -309,7 +316,14 @@ function Citas() {
                       <tr key={cita.id}>
                         <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
                         <td>{cita.nombreMascota} ({cita.especie})</td>
-                        <td>{cita.motivo}</td>
+                        <td>
+                          {cita.motivo}
+                          {cita.observaciones && (
+                            <div className="small text-muted mt-1">
+                              <strong>Indicaciones del veterinario:</strong> {cita.observaciones}
+                            </div>
+                          )}
+                        </td>
                         <td>{cita.estado.charAt(0) + cita.estado.slice(1).toLowerCase()}</td>
                         <td>{cita.recordatorioSolicitado ? "Solicitado" : "No solicitado"}</td>
                       </tr>

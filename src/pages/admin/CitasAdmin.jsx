@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Alert, Badge, Button, Form, Table } from "react-bootstrap";
+import FormularioCitaAdmin from "./FormularioCitaAdmin";
 import {
+  actualizarCitaAdmin,
   actualizarEstadoCitaAdmin,
   listarTodasLasCitasAdmin,
 } from "../../services/servicioCitas";
@@ -8,6 +10,8 @@ import {
 export default function CitasAdmin() {
   const [citas, setCitas] = useState([]);
   const [filtro, setFiltro] = useState("TODAS");
+  const [clienteFiltro, setClienteFiltro] = useState("TODOS");
+  const [citaEditando, setCitaEditando] = useState(null);
   const [estadosSeleccionados, setEstadosSeleccionados] = useState({});
   const [cargando, setCargando] = useState(true);
   const [guardandoId, setGuardandoId] = useState(null);
@@ -20,7 +24,13 @@ export default function CitasAdmin() {
     if (filtro === "RECORDATORIOS") return cita.recordatorioSolicitado && !cita.archivada;
     if (filtro === "SOLICITADAS") return cita.estado === "SOLICITADA" && !cita.archivada;
     return true;
-  });
+  }).filter((cita) => clienteFiltro === "TODOS" || cita.correoUsuario === clienteFiltro);
+
+  // Agrupa las citas por el cliente que las creó (correo de su cuenta)
+  const clientes = [...new Set(citas.map((cita) => cita.correoUsuario))].sort();
+  const citasPorCliente = clientes
+    .map((correo) => [correo, citasFiltradas.filter((cita) => cita.correoUsuario === correo)])
+    .filter(([, citasCliente]) => citasCliente.length > 0);
   const cantidadActivas = citas.filter((cita) => !cita.archivada).length;
   const cantidadArchivadas = citas.filter((cita) => cita.archivada).length;
   const cantidadSolicitadas = citas.filter((cita) =>
@@ -57,14 +67,23 @@ export default function CitasAdmin() {
     }
   }
 
+  async function guardarEdicion(datos) {
+    setError("");
+    setMensaje("");
+    await actualizarCitaAdmin(citaEditando.id, datos);
+    setMensaje(`Cita de ${datos.nombreMascota} actualizada.`);
+    setCitaEditando(null);
+    await cargarCitas();
+  }
+
   useEffect(() => {
     cargarCitas();
   }, [cargarCitas]);
 
   return (
     <main className="container py-4">
-      <h1>Administración de citas</h1>
-      <p>Listado de citas registradas por los clientes.</p>
+      <h1>Citas de clientes</h1>
+      <p>Citas agrupadas por el cliente que las registró.</p>
 
       {error && <Alert variant="danger" role="alert">{error}</Alert>}
       {mensaje && <Alert variant="success" role="status">{mensaje}</Alert>}
@@ -90,14 +109,26 @@ export default function CitasAdmin() {
               <option value="SOLICITADAS">Pendientes de revisión</option>
             </Form.Select>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="filtro-cliente">
+            <Form.Label>Cliente</Form.Label>
+            <Form.Select value={clienteFiltro} onChange={(evento) => setClienteFiltro(evento.target.value)}>
+              <option value="TODOS">Todos los clientes</option>
+              {clientes.map((correo) => (
+                <option key={correo} value={correo}>{correo}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
           {citasFiltradas.length === 0 ? (
             <p>No hay citas que coincidan con el filtro.</p>
-          ) : (
+          ) : citasPorCliente.map(([correo, citasCliente]) => (
+            <section key={correo} className="mb-4" aria-label={`Citas de ${correo}`}>
+            <h2 className="h5">
+              {correo} <Badge bg="secondary">{citasCliente.length}</Badge>
+            </h2>
             <Table striped hover responsive className="align-middle">
               <thead>
                 <tr>
                   <th scope="col">Fecha y hora</th>
-                  <th scope="col">Cliente</th>
                   <th scope="col">Mascota</th>
                   <th scope="col">Motivo</th>
                   <th scope="col">Estado</th>
@@ -107,12 +138,18 @@ export default function CitasAdmin() {
                 </tr>
               </thead>
               <tbody>
-                {citasFiltradas.map((cita) => (
+                {citasCliente.map((cita) => (
                   <tr key={cita.id}>
                     <td>{new Date(cita.fechaHora).toLocaleString("es-CL")}</td>
-                    <td>{cita.correoUsuario}</td>
                     <td>{cita.nombreMascota} ({cita.especie})</td>
-                    <td>{cita.motivo}</td>
+                    <td>
+                      {cita.motivo}
+                      {cita.observaciones && (
+                        <div className="small text-muted mt-1">
+                          <strong>Obs.:</strong> {cita.observaciones}
+                        </div>
+                      )}
+                    </td>
                     <td>
                       {cita.estado === "SOLICITADA" ? (
                         <Badge bg="warning" text="dark">Solicitada</Badge>
@@ -156,14 +193,31 @@ export default function CitasAdmin() {
                         onClick={() => guardarEstado(cita)}
                       >
                         {guardandoId === cita.id ? "Guardando..." : "Guardar"}
+                      </Button>{" "}
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline-secondary"
+                        onClick={() => setCitaEditando(cita)}
+                      >
+                        Editar
                       </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
-          )}
+            </section>
+          ))}
         </>
+      )}
+
+      {citaEditando && (
+        <FormularioCitaAdmin
+          cita={citaEditando}
+          onGuardar={guardarEdicion}
+          onCerrar={() => setCitaEditando(null)}
+        />
       )}
     </main>
   );

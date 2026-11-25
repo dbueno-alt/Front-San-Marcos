@@ -22,8 +22,10 @@ export const Login = () => {
 
     try {
       const usuario = await ingresar(correo, clave);
-      if (usuario.rol === "ADMIN") {
-        navigate("/admin");
+      if (usuario.rol === "ADMIN" || usuario.rol === "VETERINARIO") {
+        navigate("/admin/citas");
+      } else if (usuario.rol === "RECEPCIONISTA") {
+        navigate("/catalogo");
       } else {
         navigate("/citas");
       }

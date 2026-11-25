@@ -48,3 +48,10 @@ export const actualizarEstadoCitaAdmin = (id, estado) =>
     method: "PUT",
     body: JSON.stringify({ estado }),
   }, RUTA_ADMIN_CITAS);
+
+// Administrador o veterinario: corrige los datos de la cita y agrega observaciones.
+export const actualizarCitaAdmin = (id, datos) =>
+  solicitar(`/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(datos),
+  }, RUTA_ADMIN_CITAS);
