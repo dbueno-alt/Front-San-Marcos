@@ -6,9 +6,14 @@ export const ROLES = {
   RECEPCIONISTA: "RECEPCIONISTA",
 };
 
-// Quiénes pueden ver el catálogo de productos veterinarios.
-// Los clientes (USER) y los visitantes sin sesión no lo ven.
-export const ROLES_CATALOGO = [ROLES.ADMIN, ROLES.VETERINARIO, ROLES.RECEPCIONISTA];
+// Quiénes pueden ver el catálogo de productos y servicios veterinarios.
+// Ahora incluye a los clientes (USER) además del personal de la clínica.
+export const ROLES_CATALOGO = [
+  ROLES.USER,
+  ROLES.ADMIN,
+  ROLES.VETERINARIO,
+  ROLES.RECEPCIONISTA,
+];
 
 // Quiénes administran y gestionan las citas de los clientes (/admin/citas).
 // Un cliente (USER) solo ve las suyas en "Mis citas".

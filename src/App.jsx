@@ -44,7 +44,7 @@ export default function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/nosotros" element={<Nosotros />} />
 
-        {/* Catálogo: protegido según roles configurados en main */}
+        {/* Catálogo: habilitado para clientes (USER) y personal de la clínica */}
         <Route element={<RutaProtegida rolesPermitidos={ROLES_CATALOGO} />}>
           <Route path="/catalogo" element={<Catalogo />} />
         </Route>
